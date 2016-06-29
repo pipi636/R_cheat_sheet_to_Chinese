@@ -1,0 +1,227 @@
+---
+title: "R卡片1：R基础和控制结构简介"
+author: "yb"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## 注释
+  # 从#号开始到这一行结束均为注释，r不会执行这一行代码
+  
+## 基本数据类型
+
+1) `logical`  #逻辑型，包含布尔值TRUE和FALSE
+
+2) `integer` #32位整数
+
+3) `double` #双精度实数
+
+4) `character` #字符型
+
+5) `complex` #复数型 (3+2i)
+
+注意: 整型和双精度型均为数值型（`numeric`）
+
+# R数据结构
+
+1) `atomic vector` #原子向量，长度为1-N，所有的元素只能是同一种数据类型，元素可以命名。R没有标量的概念，单个的数字或者字符实际上是长度为1的向量。
+
+2) `list` #列表，长度为1-N，可以是任何R对象，甚至包括列表自身，列表的元素可以是不同类型的对象，元素可以命名。
+
+3) `factor` #因子，长度为1-N，有序或分类的数据，通常是字符型，但底层存储为整型。
+
+4) `data.frame` #1-M行，1-N列,每一列通常是一个变量，表现为向量类型或者因子类型，行可命名。
+
+5) `matrix` #2维数值向量，1-M行，1-N列，行和列都可命名。
+
+6) `array` – essentially a matrix with
+
+(typically) 3 or more dimensions
+
+Note: While these are the most common
+
+objects used for analysis, most things in R
+
+are objects that can be manipulated.
+
+Note: Some objects only contain certain
+
+types (eg. matrix), or everything in the
+
+object is of the same type (eg. vector)
+
+# 对象索引
+
+Because objects contain multiple values,
+
+understanding indexing is critical to R:
+
+1) `x[i], x[r, c]` – can select multiple
+
+2) `x[[i]], x[[r, c]]` – select single
+
+3) `x$i, x$"i"` – select single by name
+
+a) by number: `x[5]; x[1:10]; x[length(x)]`
+
+b) by logic: `x[T,F,T,F]; x[!is.na(x)]`
+
+c) by name: `x['me']; x$me; x[c('a', 'b')]`
+
+Note: 2-dimension indexes are x[row, col]
+
+Trap: x[i] and x[[i]] can return very
+
+different results from the same object
+
+# 类
+
+R has class mechanisms for creating more
+
+complex data objects. Common classes
+
+include Date, ts (time series data), lm
+
+(the results of a regression linear model).
+
+These are often used like other objects.
+
+# 对象和变量
+
+Objects can be assigned to variables: <-
+
+Note: objects have mode/type, not variables
+
+Note: if an object has a rule your code
+
+will be quietly coerced to meet the rule:
+
+`x <- c(1, "2"); cat(x)` # -> "1", "2"
+
+# 查看对象的属性
+
+1) `typeof(x)` – the R type of x
+
+2) `mode(x)` – the data mode of x
+
+3) `storage.mode(x)` – the storage mode of x
+
+4) `class(x)` – the class of x
+
+5) `attributes(x)` – the attributes of x
+
+(common attributes: 'class' and 'dim')
+
+6) `str(x)` – print a summary structure of x
+
+7) `dput(x)` – print full text R code for x
+
+# 缺失值和不存在的值
+
+1) `NULL` is an object, typically used to
+
+mean the variable contains no object.
+
+2) `NA` is a value that means: missing data
+
+item here
+
+
+```{r}
+x <- NULL; is.null(x); y <- NA; is.na(y);length(NULL); length(NA)
+```
+
+
+# -> 0, 1
+
+Trap: can have a list of NULLs but not a
+
+vector of NULLs. Can have a vector of NAs.
+
+# 其他非数字的数值对象
+
+1) `Inf` # positive infinity
+
+2) `-Inf` # negative infinity
+
+3) `NaN` # not a number
+
+1/0; 0/0 # -> Inf, NaN
+
+# 操作符
+
+`+, -, *, /` # addition, subtraction,
+
+ # multiplication, division
+
+`^ or **` # exponentiation
+
+`%%` # modulus
+
+`%/%` # integer division
+
+`%in%` # membership
+
+`:` # sequence generation
+
+`<, <=, ==, >=, >, !=` # Boolean comparative
+
+`|, ||` # (vectorised/not vec)
+
+`&, &&` # (vectorised/not vec)
+
+Note: with few exceptions (&&, || and :)
+
+operators take vectors and return vectors.
+
+# 流程控制结构
+
+1) `if (cond) expr`
+
+2) `if (cond) expr1 else expr2`
+
+3) `for (var in seq) expr`
+
+4) `while (cond) expr`
+
+5) `repeat expr`
+
+Note: break exits a loop, next moves flow
+
+to the start of the loop with the next var
+
+Note: expressions typically enclosed in {}
+
+But single expressions do not need the {}
+
+Multiple expression on a line ; separated
+
+# 流程控制函数
+
+1) the vectorised if statement:
+
+`result <- ifelse(cond, expr1, expr2)`
+
+2) the switch statement (not vectorised):
+
+
+```{r eval = FALSE}
+switch( expr.string,
+
+case1 = expr1,
+
+case2 = expr2,
+
+default = expr 3 # default optional)
+
+```
+
+expr.string evaluates to a char string
+
+Note: cases not enclosed in quotes.
+
+
